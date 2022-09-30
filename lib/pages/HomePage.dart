@@ -13,13 +13,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 80, left: 20, right: 20),
         child: Column(
-          children: const [
-            SizedBox(
-              child: Text("Find a Job", style: TextStyle(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(),
 
-              ),)
+                    ],
+                  ),
+                  Text("Find a Job", style: TextStyle(
+                    fontStyle: GoogleFonts.poppins().fontStyle,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold
+                  ),),
+                ],
+              )
             ),
           ],
         ),
