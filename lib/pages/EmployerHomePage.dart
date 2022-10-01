@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:jobportal/Api/Api.dart';
+import 'package:jobportal/Model/Job.dart';
 import 'package:jobportal/Widgets/CustomDropdown.dart';
 
 import '../Widgets/JobCard.dart';
@@ -14,8 +17,16 @@ class EmployerHomePage extends StatefulWidget {
 }
 
 class _EmployerHomePageState extends State<EmployerHomePage> {
-  List<String> empTypes = ["Labour", "Electrician", "Carpenter"];
+  List<String> empTypes = ["Labourer", "Electrician", "Carpenter"];
   int navIndex = 0;
+
+  Api _api = Api();
+
+  @override
+  void initState() {
+    fetchPostedJobList();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +50,31 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
       ),
       body: navIndex == 0 ? getPostedJobsList() : createNewPost(),
     );
+  }
+
+  List<JobModel> jobs = [];
+
+  void fetchPostedJobList() async {
+    try{
+      Response res = await _api.get(endpoint: "/jobs/employer/list");
+      print(res.data["jobs"]);
+      List<dynamic> response = res.data["jobs"];
+
+      print(response);
+      List<JobModel> tempJobs = [];
+      response.forEach((job) {
+        JobModel tempjob = JobModel(title: job["jobTitle"], description: job["description"], location: job["location"], noOfWorkers: job["totalWorkersRequired"], wagePerHour: job["payPerHour"], fromDate: job["startsOn"], toDate: job["endsOn"], workerType: job["workerTagRequired"], jobId: job["jobId"],
+        appliedWorkersCount: job["appliedWorkersCount"]);
+        tempJobs.add(tempjob);
+      });
+
+      setState(() {
+        jobs = tempJobs;
+      });
+    }
+    on DioError catch (e){
+      print(e.response);
+    }
   }
 
   Widget getPostedJobsList() {
@@ -82,6 +118,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
   int wagePerHour = 0;
   String workerType = "";
   String errMsgForm = "";
+  bool callingApi = false;
 
   Future<DateTime?> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -112,7 +149,8 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
 
   GlobalKey<FormState> _formKey = GlobalKey();
 
-  void validateAndSave() {
+
+  void validateAndSave() async {
     if (jobTitle.length < 4) {
       setState(() {
         errMsgForm = "Job Title length must be 4";
@@ -141,7 +179,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
       return;
     }
 
-    if (wagePerHour <= 100) {
+    if (wagePerHour < 100) {
       setState(() {
         errMsgForm = "Minimum wage per hour allowed Rs100";
       });
@@ -157,10 +195,40 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
 
     setState(() {
       errMsgForm = "";
+      callingApi = true;
     });
 
+    print("all set");
+
+    try{
+
+      Response res = await _api.post(endpoint: '/jobs/employer/create', data: {
+        "jobTitle":jobTitle,
+        "description":jobDescription,
+        "totalWorkersRequired":noOfWorkers,
+        "location":location,
+        "payPerHour":wagePerHour,
+        "startOn":fromDate.toIso8601String(),
+        "endsOn": toDate.toIso8601String(),
+        "hoursPerDay":"10",
+      });
+
+      //if request was successful
+      print(res.data);
+
+      setState(() {
+        navIndex = 0;
+      });
+    }
+    on DioError catch(e){
+      print("error");
+      print(e.response);
+      print(e.message);
+    }
     //api call
   }
+
+
 
   Widget createNewPost() {
     DateFormat formatter = DateFormat('yyyy-MM-dd');

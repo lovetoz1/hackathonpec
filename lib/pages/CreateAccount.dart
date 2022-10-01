@@ -26,12 +26,14 @@ class _CreateAccountState extends State<CreateAccount> {
 
 
   String UserName = "";
-  String UserType = "Worker";
+  String UserType = "worker";
   String WorkerType = "";
   String errMsgForm = "";
 
 
-  List<String> empTypes = ["Labour", "Electrician", "Carpenter"];
+  List<String> empTypes = ["Labourer", "Electrician", "Carpenter"];
+
+  bool callingApi = false;
 
   
   Api _api = Api();
@@ -43,14 +45,20 @@ class _CreateAccountState extends State<CreateAccount> {
       });
       return;
     }
-    
-    Response res = await _api.post(endpoint: '/users/create-account', data: {
-      "name":UserName,
-      "userType":UserType,
-      "workerType":WorkerType,
+
+    setState(() {
+      errMsgForm = "";
+      callingApi = true;
     });
 
-    if(res.statusCode == 200){
+    try{
+
+      Response res = await _api.post(endpoint: '/users/create-account', data: {
+        "name":UserName,
+        "userType":UserType,
+        "workerTag":WorkerType,
+      });
+
       if(UserType == "Worker"){
         Navigator.of(context).pushAndRemoveUntil(PageTransition(child: const WorkerHomePage(), type: PageTransitionType.rightToLeft), (route) => false);
       }
@@ -58,7 +66,9 @@ class _CreateAccountState extends State<CreateAccount> {
         Navigator.of(context).pushAndRemoveUntil(PageTransition(child: const EmployerHomePage(), type: PageTransitionType.rightToLeft), (route) => false);
       }
     }
-    
+    on DioError catch(e){
+      print(e.response);
+    }
   }
 
 
@@ -108,7 +118,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         GestureDetector(
                           onTap: (){
                             setState(() {
-                              UserType = "Worker";
+                              UserType = "worker";
                             });
                           },
                           child: Container(
@@ -117,7 +127,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             decoration:BoxDecoration(
                                 border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(10),
-                              color: UserType == "Worker" ? Colors.blue : Colors.transparent,
+                              color: UserType == "worker" ? Colors.blue : Colors.transparent,
                             ),
                             child: Center(
                               child: Text("Worker"),
@@ -127,7 +137,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         GestureDetector(
                           onTap: (){
                             setState(() {
-                              UserType = "Employer";
+                              UserType = "employer";
                             });
                           },
                           child: Container(
@@ -136,7 +146,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             decoration:BoxDecoration(
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(10),
-                              color: UserType == "Employer" ? Colors.blue : Colors.transparent,
+                              color: UserType == "employer" ? Colors.blue : Colors.transparent,
                             ),
                             child: Center(
                               child: Text("Employer"),
@@ -146,7 +156,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       ],
                     ),
                     SizedBox(height: 10,),
-                    if(UserType == "Worker")Row(
+                    if(UserType == "worker")Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -164,7 +174,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 10,
                     ),
-                    ElevatedButton(
+                    if(!callingApi)ElevatedButton(
                       onPressed: () => {validateAndSave()},
                       style: ElevatedButton.styleFrom(
                           primary: Colors.black, padding: EdgeInsets.all(8)),
@@ -177,6 +187,9 @@ class _CreateAccountState extends State<CreateAccount> {
                           ),
                         ),
                       ),
+                    ),
+                    if(callingApi) const Center(
+                      child: CircularProgressIndicator(),
                     ),
                     SizedBox(height: 10,),
                     if (errMsgForm.length != 0)

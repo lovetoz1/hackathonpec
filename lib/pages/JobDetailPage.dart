@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jobportal/Widgets/CustomIconButton.dart';
 
@@ -10,6 +11,26 @@ class JobDetailPage extends StatefulWidget {
 }
 
 class _JobDetailPageState extends State<JobDetailPage> {
+
+  FlutterTts flutterTts = FlutterTts();
+
+  void speakDescription() async {
+
+    List<dynamic> languages = await flutterTts.getLanguages;
+    print(languages);
+    print("function called speak");
+    await flutterTts.setLanguage("hi-IN");
+
+    await flutterTts.speak("""संता - अगर तुम्हें गर्मी लगती है तो क्या करते हो?
+
+    बंता - मैं कूलर के पास जाकर बैठ जाता हूं।
+
+    संता- अगर फिर भी गर्मी लगती है तो क्या करते हो?
+
+    बंता - तो फिर मैं कूलर चालू कर लेता हूं!""");
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,7 +166,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
                             style: GoogleFonts.poppins(fontSize: 20),
                           ),
                           CustomIconButton(
-                              icon: Icons.volume_up_sharp, onPress: () => {})
+                              icon: Icons.volume_up_sharp, onPress: speakDescription
+                          )
                         ],
                       ),
                       const SizedBox(
