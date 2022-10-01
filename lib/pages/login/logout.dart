@@ -31,9 +31,7 @@ class _LogOutState extends State<LogOut> {
                               FirebaseAuth.instance.signOut();
                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                                   builder: (context) => LoginScreen()), (route) => false);
-                              setState(() {
 
-                              });
                           },
                         
                         ),

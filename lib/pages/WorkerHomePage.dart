@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jobportal/Widgets/JobCard.dart';
+import 'package:jobportal/pages/login/firstpage.dart';
 
 class WorkerHomePage extends StatefulWidget {
   const WorkerHomePage({Key? key}) : super(key: key);
@@ -19,7 +21,31 @@ class _WorkerHomePageState extends State<WorkerHomePage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: new Drawer(),
+      drawer: new Drawer(
+        child: Center(
+          child: ListView(
+            children: [
+              ListTile(
+                title: Text("Sign out"),
+                onTap:(){
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                      builder: (context) => LoginScreen()), (route) => false);
+
+                },
+              ),
+              ListTile(
+                title: Text("Show Profile"),
+                onTap: (){
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                      builder: (context) => LoginScreen()), (route) => false);
+
+                },
+              )
+            ],
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navIndex,
         onTap: (ind) {
