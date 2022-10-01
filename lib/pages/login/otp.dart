@@ -79,7 +79,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:jobportal/pages/HomePage.dart';
+import 'package:jobportal/pages/EmployerHomePage.dart';
+import 'package:jobportal/pages/WorkerHomePage.dart';
 import 'package:jobportal/pages/login/logout.dart';
 
 import 'package:pinput/pinput.dart';
@@ -142,7 +143,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     if (value.user != null) {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => (LogOut())),
+                          MaterialPageRoute(builder: (context) => (EmployerHomePage())),
                               (route) => false);
                     }
                   });
@@ -168,7 +169,7 @@ class _OTPScreenState extends State<OTPScreen> {
             if (value.user != null) {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => EmployerHomePage()),
                       (route) => false);
             }
           });

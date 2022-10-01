@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jobportal/firebase_options.dart';
-import 'package:jobportal/pages/HomePage.dart';
+import 'package:jobportal/pages/CreateAccount.dart';
 import 'package:jobportal/pages/login/firstpage.dart';
 
 void main() async{
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
       ),
-      home:  LoginScreen(),
+      home:  CreateAccount(),
     );
   }
 }
