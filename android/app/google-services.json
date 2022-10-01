@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "734283547733",
+    "project_id": "hackathonpec-2022-backend",
+    "storage_bucket": "hackathonpec-2022-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734283547733:android:e6b3aa09d6ae1083ee80dc",
+        "android_client_info": {
+          "package_name": "com.example.jobportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734283547733-79qv1gi37pq0ahj6lstm51ia9012r0e1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVoz4wouhW69LVRc65ioUdR9gjCkLA104"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734283547733-79qv1gi37pq0ahj6lstm51ia9012r0e1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "734283547733-a347tcmd18fv5jf1pujbccnjnop6gpdu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jobportal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

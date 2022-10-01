@@ -1,8 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:jobportal/pages/EmployerHomePage.dart';
-import 'package:jobportal/pages/WorkerHomePage.dart';
+import 'package:jobportal/firebase_options.dart';
+import 'package:jobportal/pages/HomePage.dart';
+import 'package:jobportal/pages/login/firstpage.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(const MyApp());
 }
 
@@ -17,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
       ),
-      home: const EmployerHomePage(),
+      home:  LoginScreen(),
     );
   }
 }
