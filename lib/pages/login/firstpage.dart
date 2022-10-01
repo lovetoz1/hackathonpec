@@ -1,6 +1,8 @@
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:jobportal/Api/Api.dart';
 import 'package:jobportal/pages/login/otp.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,6 +13,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  Api _api = Api();
+  void apigetit()async{
+    Response res = await _api.get(endpoint: '/users/get');
+
+
+  }
+
+
+
   final TextEditingController controller = TextEditingController();
   bool _isLoading = false;
  String intcode="";
