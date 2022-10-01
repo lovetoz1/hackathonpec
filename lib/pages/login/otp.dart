@@ -2,9 +2,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jobportal/pages/CreateJobPage.dart';
 import 'package:jobportal/pages/EmployerHomePage.dart';
 import 'package:jobportal/pages/WorkerHomePage.dart';
 import 'package:jobportal/pages/login/logout.dart';
+import 'package:jobportal/pages/registerOrlogin.dart';
 
 import 'package:pinput/pinput.dart';
 
@@ -65,9 +67,10 @@ class _OTPScreenState extends State<OTPScreen> {
                       verificationId: _verificationCode!, smsCode: pin))
                       .then((value) async {
                     if (value.user != null) {
+
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => (EmployerHomePage())),
+                          MaterialPageRoute(builder: (context) => (RegisterOrLogin())),
                               (route) => false);
                     }
                   });
@@ -93,7 +96,7 @@ class _OTPScreenState extends State<OTPScreen> {
             if (value.user != null) {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => EmployerHomePage()),
+                  MaterialPageRoute(builder: (context) => RegisterOrLogin()),
                       (route) => false);
             }
           });

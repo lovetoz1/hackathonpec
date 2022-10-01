@@ -4,27 +4,40 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:jobportal/Api/Api.dart';
-import 'package:jobportal/Model/Job.dart';
 import 'package:jobportal/Widgets/CustomDropdown.dart';
 
 import '../Widgets/JobCard.dart';
 
 class EmployerHomePage extends StatefulWidget {
+
   const EmployerHomePage({Key? key}) : super(key: key);
 
   @override
   State<EmployerHomePage> createState() => _EmployerHomePageState();
 }
 
-class _EmployerHomePageState extends State<EmployerHomePage> {
-  List<String> empTypes = ["Labourer", "Electrician", "Carpenter"];
-  int navIndex = 0;
 
+class _EmployerHomePageState extends State<EmployerHomePage> {
   Api _api = Api();
+
+
+  void printresdata () async{
+    Response res = await _api.get(endpoint: '/users/get');
+    print(res.data['user']['name']);
+    print(res.data['userType']);
+    print(res.data);
+
+
+  }
+
+
+  List<String> empTypes = ["Labour", "Electrician", "Carpenter"];
+  int navIndex = 0;
 
   @override
   void initState() {
-    fetchPostedJobList();
+    printresdata();
+    // TODO: implement initState
     super.initState();
   }
   @override
