@@ -22,27 +22,12 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
   int navIndex = 0;
   bool callingFetchJobApi = false;
   bool callingCreateJobApi = false;
-
-class _EmployerHomePageState extends State<EmployerHomePage> {
   Api _api = Api();
 
 
-  void printresdata () async{
-    Response res = await _api.get(endpoint: '/users/get');
-    print(res.data['user']['name']);
-    print(res.data['userType']);
-    print(res.data);
-
-
-  }
-
-
-  List<String> empTypes = ["Labour", "Electrician", "Carpenter"];
-  int navIndex = 0;
-
   @override
   void initState() {
-    printresdata();
+    fetchPostedJobList();
     // TODO: implement initState
     super.initState();
   }

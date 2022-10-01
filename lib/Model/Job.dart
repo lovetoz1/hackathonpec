@@ -11,6 +11,7 @@ class JobModel{
   late String workerType;
   late String jobId;
   late int appliedWorkersCount;
+  bool applied = false;
 
   JobModel({required String title, required String description, required String location, required int noOfWorkers, required int wagePerHour, required DateTime fromDate,
   required DateTime toDate, required String workerType, required this.jobId, required appliedWorkersCount}){
