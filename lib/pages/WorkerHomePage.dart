@@ -12,9 +12,14 @@ class WorkerHomePage extends StatefulWidget {
 class _WorkerHomePageState extends State<WorkerHomePage> {
 
   int navIndex = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: new Drawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navIndex,
         onTap: (ind) {
@@ -54,8 +59,14 @@ class _WorkerHomePageState extends State<WorkerHomePage> {
                   children: [
                     Row(
                       children: [
-                        const CircleAvatar(
-                          backgroundColor: Colors.grey,
+                        GestureDetector(
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.grey,
+                          ),
+                          onTap:() {
+
+                                _scaffoldKey.currentState?.openDrawer();
+                          },
                         ),
                         const SizedBox(width: 10,),
                         Text("Sushant Mishra", style: GoogleFonts.poppins(fontSize: 20))

@@ -52,6 +52,7 @@ class _OTPScreenState extends State<OTPScreen> {
             padding: const EdgeInsets.all(30.0),
             child: Pinput(
               length: 6,
+
               defaultPinTheme: defaultPinTheme,
 
               controller: _pinPutController,
