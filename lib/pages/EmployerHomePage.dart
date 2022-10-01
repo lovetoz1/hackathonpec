@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:jobportal/Api/Api.dart';
 import 'package:jobportal/Widgets/CustomDropdown.dart';
 
+import '../Model/Job.dart';
 import '../Widgets/JobCard.dart';
 
 class EmployerHomePage extends StatefulWidget {

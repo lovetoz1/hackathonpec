@@ -21,7 +21,7 @@ class _RegisterOrLoginState extends State<RegisterOrLogin> {
       print(res.data);
 
       try { if (res.data['user']['name'] != null) {
-        if (res.data['user']['userType'] == 'Worker') {
+        if (res.data['user']['userType'] == 'worker') {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => (WorkerHomePage())),
@@ -38,7 +38,9 @@ class _RegisterOrLoginState extends State<RegisterOrLogin> {
             MaterialPageRoute(builder: (context) => (CreateAccount())),
             (route) => false);
       }
-    }
+    } on DioError catch(e){
+        print(e.response);
+      }
 
   }
 

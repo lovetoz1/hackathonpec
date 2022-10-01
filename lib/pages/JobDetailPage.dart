@@ -12,6 +12,9 @@ class JobDetailPage extends StatefulWidget {
 
 class _JobDetailPageState extends State<JobDetailPage> {
 
+  bool _isLoading = false;
+
+
   FlutterTts flutterTts = FlutterTts();
 
   void speakDescription() async {
@@ -194,10 +197,43 @@ class _JobDetailPageState extends State<JobDetailPage> {
                   child: SizedBox(
                     width: double.infinity,
                     child: Center(
-                      child: Text(
-                        "Apply Now",
-                        style: GoogleFonts.poppins(fontSize: 20),
+                      child:   MaterialButton(
+                        minWidth: double.infinity,
+                        onPressed: () {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+
+                          Future.delayed(Duration(seconds: 2), () {
+                            setState(() {
+                              _isLoading = false;
+                            });
+
+
+                          });
+                        },
+                        color: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        child: _isLoading  ? Container(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            color: Colors.black,
+                            strokeWidth: 2,
+                          ),
+                        ) :
+                        Text("Apply Now",   style: GoogleFonts.poppins(fontSize: 20),),
                       ),
+                      // child: Text(
+                      //   "Apply Now",
+                      //   style: GoogleFonts.poppins(fontSize: 20),
+                      // ),
+
                     ),
                   ),
                   style: ElevatedButton.styleFrom(

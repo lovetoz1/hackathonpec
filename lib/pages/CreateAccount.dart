@@ -58,8 +58,9 @@ class _CreateAccountState extends State<CreateAccount> {
         "userType":UserType,
         "workerTag":WorkerType,
       });
-
-      if(UserType == "Worker"){
+print(res.data);
+      if(UserType == "worker"){
+        print("worker");
         Navigator.of(context).pushAndRemoveUntil(PageTransition(child: const WorkerHomePage(), type: PageTransitionType.rightToLeft), (route) => false);
       }
       else{
