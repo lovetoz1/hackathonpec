@@ -15,6 +15,43 @@ class JobDetailPage extends StatefulWidget {
 
 class _JobDetailPageState extends State<JobDetailPage> {
 
+  void validateAndSave() async {
+    if(UserName.length <= 4){
+      setState(() {
+        errMsgForm = "User Name must me 4 length";
+      });
+      return;
+    }
+
+    setState(() {
+      errMsgForm = "";
+      callingApi = true;
+    });
+
+    try{
+
+      Response res = await _api.post(endpoint: '/users/create-account', data: {
+        "name":UserName,
+        "userType":UserType,
+        "workerTag":WorkerType,
+      });
+      print(res.data);
+      if(UserType == "worker"){
+        print("worker");
+        Navigator.of(context).pushAndRemoveUntil(PageTransition(child: const WorkerHomePage(), type: PageTransitionType.rightToLeft), (route) => false);
+      }
+      else{
+        Navigator.of(context).pushAndRemoveUntil(PageTransition(child: const EmployerHomePage(), type: PageTransitionType.rightToLeft), (route) => false);
+      }
+    }
+    on DioError catch(e){
+      print(e.response);
+    }
+  }
+
+  bool _isLoading = false;
+
+
   FlutterTts flutterTts = FlutterTts();
   final translator = GoogleTranslator();
 
@@ -193,18 +230,47 @@ class _JobDetailPageState extends State<JobDetailPage> {
                   height: 20,
                 ),
                 ElevatedButton(
+
                   onPressed: () => {},
                   child: SizedBox(
-                    width: double.infinity,
+                    width: MediaQuery. of(context). size. width*0.9,
                     child: Center(
-                      child: Text(
-                        "Apply Now",
-                        style: GoogleFonts.poppins(fontSize: 20),
+                      child:   MaterialButton(
+                        minWidth: double.infinity,
+                        onPressed: () {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+
+                          // Future.delayed(Duration(seconds: 2), () {
+                          //   setState(() {
+                          //     _isLoading = false;
+                          //   });
+                          //
+                          //
+                          // });
+                        },
+                        color: _isLoading ? Colors.black : Colors.green,
+                        shape: RoundedRectangleBorder(
+                            // borderRadius: BorderRadius.circular(5)
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        child: _isLoading  ? Container(
+
+                          child: Text("Applied",   style: GoogleFonts.poppins(fontSize: 20,color: Colors.white),),
+                        ) :
+                        Text("Apply Now",   style: GoogleFonts.poppins(fontSize: 20,color: Colors.white),),
                       ),
+                      // child: Text(
+                      //   "Apply Now",
+                      //   style: GoogleFonts.poppins(fontSize: 20),
+                      // ),
+
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.black, padding: EdgeInsets.all(8)),
+                  // style: ElevatedButton.styleFrom(
+                  //     primary: Colors.black, padding: EdgeInsets.all(8)),
                 ),
                 const SizedBox(
                   height: 10,

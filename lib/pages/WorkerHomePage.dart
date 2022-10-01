@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jobportal/Model/Job.dart';
+import 'package:jobportal/Api/Api.dart';
 import 'package:jobportal/Widgets/JobCard.dart';
 import 'package:jobportal/pages/login/firstpage.dart';
 
@@ -18,7 +20,25 @@ class _WorkerHomePageState extends State<WorkerHomePage> {
   List<JobModel> exploreJobs = [];
   List<JobModel> appliedJobs = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+//
+// Api _api = Api();
+//
+//
+//   void printresdata () async{
+//     Response res = await _api.get(endpoint: '/users/get');
+//     print(res.data['user']['name']);
+//     print(res.data['userType']);
+//     print(res.data);
+//
+//
+//   }
 
+  @override
+  void initState() {
+    // printresdata();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 

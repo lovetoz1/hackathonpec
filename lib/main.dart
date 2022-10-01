@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
       ),
-      // home:  LoginScreen(),
-      home: EmployerHomePage(),
+      home:  LoginScreen(),
+      // home: ProfilePage(),
     );
   }
 }
