@@ -19,6 +19,8 @@ class EmployerHomePage extends StatefulWidget {
 class _EmployerHomePageState extends State<EmployerHomePage> {
   List<String> empTypes = ["Labourer", "Electrician", "Carpenter"];
   int navIndex = 0;
+  bool callingFetchJobApi = false;
+  bool callingCreateJobApi = false;
 
   Api _api = Api();
 
@@ -55,6 +57,9 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
   List<JobModel> jobs = [];
 
   void fetchPostedJobList() async {
+    setState(() {
+      callingFetchJobApi = true;
+    });
     try{
       Response res = await _api.get(endpoint: "/jobs/employer/list");
       print(res.data["jobs"]);
@@ -63,17 +68,21 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
       print(response);
       List<JobModel> tempJobs = [];
       response.forEach((job) {
-        JobModel tempjob = JobModel(title: job["jobTitle"], description: job["description"], location: job["location"], noOfWorkers: job["totalWorkersRequired"], wagePerHour: job["payPerHour"], fromDate: job["startsOn"], toDate: job["endsOn"], workerType: job["workerTagRequired"], jobId: job["jobId"],
+        JobModel tempjob = JobModel(title: job["jobTitle"], description: job["description"], location: job["location"], noOfWorkers: job["totalWorkersRequired"], wagePerHour: job["payPerHour"], fromDate: DateTime.parse(job["startsOn"]), toDate: DateTime.parse(job["endsOn"]), workerType: job["workerTagRequired"], jobId: job["jobId"],
         appliedWorkersCount: job["appliedWorkersCount"]);
         tempJobs.add(tempjob);
       });
 
       setState(() {
         jobs = tempJobs;
+        callingFetchJobApi = false;
       });
     }
     on DioError catch (e){
       print(e.response);
+      setState(() {
+        callingFetchJobApi = false;
+      });
     }
   }
 
@@ -98,12 +107,12 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
               ],
             )),
         Expanded(
-          child: ListView.builder(
+          child: callingFetchJobApi ? Center(child: CircularProgressIndicator(),) : ListView.builder(
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, ind) {
-              return const JobCard();
+              return JobCard(job: jobs[ind],);
             },
-            itemCount: 10,
+            itemCount: jobs.length,
           ),
         )
       ],
@@ -118,7 +127,6 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
   int wagePerHour = 0;
   String workerType = "";
   String errMsgForm = "";
-  bool callingApi = false;
 
   Future<DateTime?> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -186,7 +194,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
       return;
     }
 
-    if (toDate.isBefore(fromDate) || toDate == fromDate) {
+    if (toDate.isBefore(fromDate)) {
       setState(() {
         errMsgForm = "To date should be greater than from date";
       });
@@ -195,7 +203,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
 
     setState(() {
       errMsgForm = "";
-      callingApi = true;
+      callingCreateJobApi = true;
     });
 
     print("all set");
@@ -208,22 +216,27 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
         "totalWorkersRequired":noOfWorkers,
         "location":location,
         "payPerHour":wagePerHour,
-        "startOn":fromDate.toIso8601String(),
+        "startsOn":fromDate.toIso8601String(),
         "endsOn": toDate.toIso8601String(),
-        "hoursPerDay":"10",
+        "hoursPerDay":10,
+        "workerTagRequired":workerType,
       });
 
       //if request was successful
       print(res.data);
-
+      fetchPostedJobList();
       setState(() {
         navIndex = 0;
+        callingCreateJobApi = false;
       });
     }
     on DioError catch(e){
       print("error");
       print(e.response);
       print(e.message);
+      setState(() {
+        callingCreateJobApi = false;
+      });
     }
     //api call
   }
@@ -356,7 +369,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                     SizedBox(
                       height: 10,
                     ),
-                    ElevatedButton(
+                    if(!callingCreateJobApi )ElevatedButton(
                       onPressed: () => {validateAndSave()},
                       style: ElevatedButton.styleFrom(
                           primary: Colors.black, padding: EdgeInsets.all(8)),
@@ -370,6 +383,11 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                         ),
                       ),
                     ),
+
+                    if(callingCreateJobApi) Center(
+                      child: CircularProgressIndicator(),
+                    ),
+
                     SizedBox(height: 10,),
                     if (errMsgForm.length != 0)
                       Text(

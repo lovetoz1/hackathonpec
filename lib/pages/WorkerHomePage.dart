@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jobportal/Model/Job.dart';
 import 'package:jobportal/Widgets/JobCard.dart';
 import 'package:jobportal/pages/login/firstpage.dart';
 
@@ -14,6 +15,8 @@ class WorkerHomePage extends StatefulWidget {
 class _WorkerHomePageState extends State<WorkerHomePage> {
 
   int navIndex = 0;
+  List<JobModel> exploreJobs = [];
+  List<JobModel> appliedJobs = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -134,9 +137,9 @@ class _WorkerHomePageState extends State<WorkerHomePage> {
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, ind) {
-              return const JobCard();
+              return JobCard(job: exploreJobs[ind],);
             },
-            itemCount: 10,
+            itemCount: exploreJobs.length,
           ),
         )
       ],
@@ -164,9 +167,9 @@ class _WorkerHomePageState extends State<WorkerHomePage> {
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, ind) {
-              return const JobCard();
+              return JobCard(job: appliedJobs[ind],);
             },
-            itemCount: 10,
+            itemCount: appliedJobs.length,
           ),
         )
       ],
@@ -175,3 +178,4 @@ class _WorkerHomePageState extends State<WorkerHomePage> {
 
 
 }
+

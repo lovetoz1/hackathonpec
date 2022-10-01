@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jobportal/ProfilePage.dart';
 import 'package:jobportal/firebase_options.dart';
+import 'package:jobportal/pages/EmployerHomePage.dart';
 import 'package:jobportal/pages/WorkerHomePage.dart';
 import 'package:jobportal/pages/login/firstpage.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
       ),
       // home:  LoginScreen(),
-      home: ProfilePage(),
+      home: EmployerHomePage(),
     );
   }
 }

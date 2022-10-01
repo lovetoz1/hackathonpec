@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jobportal/Model/Job.dart';
 import 'package:jobportal/pages/JobDetailPage.dart';
 import 'package:page_transition/page_transition.dart';
 
 class JobCard extends StatelessWidget {
-  const JobCard({Key? key}) : super(key: key);
+  final JobModel job;
+  const JobCard({required this.job, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         print("tapped");
-        Navigator.of(context).push(PageTransition(child: const JobDetailPage(), type: PageTransitionType.rightToLeft));
+        Navigator.of(context).push(PageTransition(child: JobDetailPage(job: job,), type: PageTransitionType.rightToLeft));
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -29,20 +31,20 @@ class JobCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Job Title",
+                  job.title,
                   style: GoogleFonts.poppins(
                       fontSize: 20, fontWeight: FontWeight.bold,
                   ),
                 ),
                 Container(
                   height: 40,
-                  width: 80,
+                  width: 100,
                   decoration: BoxDecoration(
                     color: Colors.greenAccent,
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
-                    child: Text("₹200/hr", style: GoogleFonts.notoSansMono(fontWeight: FontWeight.bold, fontSize: 16),),
+                    child: Text("₹${job.wagePerHour}/hr", style: GoogleFonts.notoSansMono(fontWeight: FontWeight.bold, fontSize: 16),),
                   ),
                 )
               ],
@@ -50,8 +52,8 @@ class JobCard extends StatelessWidget {
 
             //skills required
             Row(
-              children: const[
-                SkillChip(skillName: "Electrician"),
+              children:[
+                SkillChip(skillName: job.workerType),
               ],
             ),
 
@@ -61,7 +63,7 @@ class JobCard extends StatelessWidget {
               children: [
                 Icon(Icons.location_pin, size: 15,),
                 SizedBox(width: 5,),
-                Text("Chandigarh, India", style: GoogleFonts.poppins(),)
+                Text(job.location, style: GoogleFonts.poppins(),)
               ],
             ),
 

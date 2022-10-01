@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jobportal/Model/Job.dart';
 import 'package:jobportal/Widgets/CustomIconButton.dart';
+import 'package:translator/translator.dart';
 
 class JobDetailPage extends StatefulWidget {
-  const JobDetailPage({Key? key}) : super(key: key);
+  final JobModel job;
+  const JobDetailPage({ required this.job, Key? key}) : super(key: key);
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
@@ -13,6 +16,7 @@ class JobDetailPage extends StatefulWidget {
 class _JobDetailPageState extends State<JobDetailPage> {
 
   FlutterTts flutterTts = FlutterTts();
+  final translator = GoogleTranslator();
 
   void speakDescription() async {
 
@@ -21,13 +25,9 @@ class _JobDetailPageState extends State<JobDetailPage> {
     print("function called speak");
     await flutterTts.setLanguage("hi-IN");
 
-    await flutterTts.speak("""संता - अगर तुम्हें गर्मी लगती है तो क्या करते हो?
-
-    बंता - मैं कूलर के पास जाकर बैठ जाता हूं।
-
-    संता- अगर फिर भी गर्मी लगती है तो क्या करते हो?
-
-    बंता - तो फिर मैं कूलर चालू कर लेता हूं!""");
+    translator.translate(widget.job.description, from: 'en', to: 'hi').then((data) async {
+      await flutterTts.speak(data.text);
+    });
 
   }
 
@@ -51,7 +51,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                 //job title
                 Center(
                   child: Text(
-                    "Building House",
+                    widget.job.title,
                     style: GoogleFonts.poppins(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
 
                 Center(
                   child: Text(
-                    "Electrician",
+                    widget.job.workerType,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                     ),
@@ -77,7 +77,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                   children: [
                     Container(
                       height: 80,
-                      width: 80,
+                      width: 100,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.blueAccent
@@ -86,7 +86,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.people_sharp),
-                          Text("10/18", style: GoogleFonts.poppins(
+                          Text("${widget.job.appliedWorkersCount}/${widget.job.noOfWorkers}", style: GoogleFonts.poppins(
                             fontSize: 18,
                               color: Colors.white
                           )),
@@ -95,7 +95,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                     ),
                     Container(
                       height: 80,
-                      width: 80,
+                      width: 100,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.green
@@ -104,7 +104,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.attach_money),
-                          Text("₹200/hr", style: GoogleFonts.poppins(
+                          Text("₹${widget.job.wagePerHour}/hr", style: GoogleFonts.poppins(
                             fontSize: 18,
                             color: Colors.white
                           )),
@@ -125,7 +125,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                       children: [
                         Icon(Icons.location_pin, size: 15,),
                         SizedBox(width: 5,),
-                        Text("Chandigarh, India", style: GoogleFonts.poppins(fontSize: 18),)
+                        Text(widget.job.location, style: GoogleFonts.poppins(fontSize: 18),)
                       ],
                     ),
                     SizedBox(
@@ -173,6 +173,9 @@ class _JobDetailPageState extends State<JobDetailPage> {
                       const SizedBox(
                         height: 10,
                       ),
+                      DescriptionPoints(
+                          text:
+                          widget.job.description),
                       const DescriptionPoints(
                           text:
                               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"),
