@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jobportal/pages/HomePage.dart';
+import 'package:jobportal/pages/EmployerHomePage.dart';
+import 'package:jobportal/pages/WorkerHomePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,10 +16,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-
-        primarySwatch: Colors.red,
       ),
-      home: const HomePage(),
+      home: const EmployerHomePage(),
     );
   }
 }

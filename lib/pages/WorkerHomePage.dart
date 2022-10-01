@@ -2,21 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jobportal/Widgets/JobCard.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class WorkerHomePage extends StatefulWidget {
+  const WorkerHomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<WorkerHomePage> createState() => _WorkerHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _WorkerHomePageState extends State<WorkerHomePage> {
+
+  int navIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          //upper portion of page containing user info and search box
-          Container(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: navIndex,
+        onTap: (ind) {
+          setState((){
+            navIndex = ind;
+          });
+        },
+        items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Explore',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.featured_play_list),
+          label: 'My Jobs',
+        ),
+      ],),
+      body: navIndex == 0 ? getExploreWidget() : getMyJobsList(),
+    );
+  }
+
+
+  Widget getExploreWidget(){
+    return Column(
+      children: [
+        //upper portion of page containing user info and search box
+        Container(
             padding: const EdgeInsets.only(top: 70, left: 20, right: 20, bottom: 30),
             decoration:const BoxDecoration(
               color: Color(0xffF3F5F7),
@@ -65,20 +90,51 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             )
-          ),
+        ),
 
-          //job list rendering
-          Expanded(
-            child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, ind) {
-                  return const JobCard();
-                },
-              itemCount: 10,
-            ),
-          )
-        ],
-      ),
+        //job list rendering
+        Expanded(
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, ind) {
+              return const JobCard();
+            },
+            itemCount: 10,
+          ),
+        )
+      ],
     );
   }
+
+
+  Widget getMyJobsList() {
+    return Column(
+      children: [
+        Container(
+            padding: const EdgeInsets.only(top: 70, left: 20, right: 20, bottom: 30),
+            decoration:const BoxDecoration(
+              color: Color(0xffF3F5F7),
+            ),
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Applied Jobs", style: GoogleFonts.poppins(fontSize: 40, fontWeight: FontWeight.bold),),
+              ],
+            )
+        ),
+        Expanded(
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, ind) {
+              return const JobCard();
+            },
+            itemCount: 10,
+          ),
+        )
+      ],
+    );
+  }
+
+
 }
